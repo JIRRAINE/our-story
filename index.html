@@ -59,13 +59,11 @@
 <body class="bg-slate-50 min-h-screen">
 
     <div class="app-container bg-slate-50 min-h-screen">
-        <!-- Loading Overlay -->
         <div id="loadingOverlay" class="fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center">
             <div class="loader mb-4"></div>
             <p id="loadingText" class="text-slate-500 font-medium italic tracking-wide">Opening our memories...</p>
         </div>
 
-        <!-- Navigation Bar -->
         <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-[400px] glass-card z-50 flex justify-around py-4 shadow-xl border border-slate-200">
             <button onclick="showPage('home')" id="nav-home" class="nav-btn text-slate-800 flex flex-col items-center transition-all active:scale-90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -81,10 +79,8 @@
             </button>
         </nav>
 
-        <!-- Primary Main Wrapper -->
         <main class="hide-scrollbar">
             
-            <!-- HOME PAGE -->
             <section id="home" class="page active-page p-8 pb-40">
                 <div class="mt-12 text-center">
                     <h1 class="text-6xl font-handwritten text-slate-800 mb-2">Our Story</h1>
@@ -129,7 +125,6 @@
                 </div>
             </section>
 
-            <!-- MOMENTS PAGE -->
             <section id="gallery" class="page p-8 pb-40">
                 <header class="flex justify-between items-end mb-10 mt-4">
                     <div>
@@ -144,7 +139,6 @@
                 <div id="photoGrid" class="grid grid-cols-2 gap-4"></div>
             </section>
 
-            <!-- LETTERS PAGE -->
             <section id="letters" class="page p-8 pb-40">
                 <header class="flex justify-between items-end mb-10 mt-4">
                     <div>
@@ -160,7 +154,6 @@
         </main>
     </div>
 
-    <!-- Write Letter Modal -->
     <div id="letterModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-6">
         <div class="bg-white w-full max-w-[400px] rounded-[32px] p-8 shadow-2xl border border-slate-100">
             <h3 class="text-2xl font-bold text-slate-800 mb-4 tracking-tight">New Letter</h3>
@@ -174,33 +167,27 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-     // 1. Corrected variable name to match what the app uses below
-const firebaseConfig = {
-  apiKey: "AIzaSyA-SiUpQDEY5vVf0xOFqw0sVofOK6xxYV8",
-  authDomain: "our-story-42b52.firebaseapp.com",
-  projectId: "our-story-42b52",
-  storageBucket: "our-story-42b52.firebasestorage.app",
-  messagingSenderId: "376510981706",
-  appId: "1:376510981706:web:9355b272baf3a739e628b3",
-  measurementId: "G-T9ZTM7KZMX"
-};
+        // 1. Corrected Configuration Object
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-SiUpQDEY5vVf0xOFqw0sVofOK6xxYV8",
+            authDomain: "our-story-42b52.firebaseapp.com",
+            projectId: "our-story-42b52",
+            storageBucket: "our-story-42b52.firebasestorage.app",
+            messagingSenderId: "376510981706",
+            appId: "1:376510981706:web:9355b272baf3a739e628b3",
+            measurementId: "G-T9ZTM7KZMX"
+        };
 
-// 2. Remove the old "firebase.initializeApp" line that was causing the crash
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'our-story-app';
-
-// 3. This line now correctly uses the lowercase 'firebaseConfig'
-const app = initializeApp(firebaseConfig);
-// This line stays the same
-firebase.initializeApp(FIREBASE_CONFIG);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'our-story-app';
-
+        // 2. Initialize Firebase (MODULAR VERSION)
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
+        
+        // Custom ID for your database path
+        const storageId = 'our-story-app'; 
         const startDate = new Date('2025-01-06T00:00:00');
 
         window.showPage = (id) => {
@@ -217,11 +204,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
 
         const initAuth = async () => {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
             } catch (err) {
                 console.error("Auth error:", err);
             }
@@ -240,8 +223,8 @@ firebase.initializeApp(FIREBASE_CONFIG);
         function startSync(userId) {
             if (!db) return;
             
-            const photosCol = collection(db, 'artifacts', appId, 'public', 'data', 'photos');
-            const lettersCol = collection(db, 'artifacts', appId, 'public', 'data', 'letters');
+            const photosCol = collection(db, 'artifacts', storageId, 'public', 'data', 'photos');
+            const lettersCol = collection(db, 'artifacts', storageId, 'public', 'data', 'letters');
 
             onSnapshot(query(photosCol, orderBy('timestamp', 'desc')), (snap) => {
                 const grid = document.getElementById('photoGrid');
@@ -272,7 +255,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
 
             window.deleteItem = async (colName, docId) => { 
                 if(!confirm("Erase this memory?")) return;
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', colName, docId)); 
+                await deleteDoc(doc(db, 'artifacts', storageId, 'public', 'data', colName, docId)); 
             };
 
             document.getElementById('photoInput').addEventListener('change', async (e) => {
@@ -334,7 +317,3 @@ firebase.initializeApp(FIREBASE_CONFIG);
     </script>
 </body>
 </html>
-
-
-
-
