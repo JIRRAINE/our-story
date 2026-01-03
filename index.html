@@ -2,157 +2,181 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story - Fast & Smooth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Story - Slate & Silver</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #fff5f5; color: #4a4a4a; -webkit-tap-highlight-color: transparent; }
-        .font-handwritten { font-family: 'Dancing Script', cursive; }
-        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 24px; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc; 
+            color: #334155; 
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
         
-        /* Navigation and Page States */
+        .font-handwritten { font-family: 'Dancing Script', cursive; }
+        
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8); 
+            border-radius: 24px; 
+        }
+        
         .page { display: none; min-height: 100vh; width: 100%; }
-        .active-page { display: block !important; animation: fadeIn 0.3s ease-out; }
+        .active-page { display: block !important; animation: fadeIn 0.4s ease-out; }
         
         @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(5px); } 
+            from { opacity: 0; transform: translateY(10px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #ec4899; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        .loader { border: 3px solid #f1f5f9; border-top: 3px solid #64748b; border-radius: 50%; width: 28px; height: 28px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Scroll Management */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         main { height: 100vh; overflow-y: auto; overflow-x: hidden; }
+
+        @media (min-width: 768px) {
+            .app-container {
+                max-width: 450px;
+                margin: 0 auto;
+                box-shadow: 0 0 50px rgba(0,0,0,0.05);
+                position: relative;
+                min-height: 100vh;
+                background: #ffffff;
+            }
+            body {
+                background-color: #f1f5f9;
+            }
+        }
     </style>
 </head>
-<body class="max-w-md mx-auto bg-pink-50 min-h-screen relative overflow-hidden">
+<body class="bg-slate-50 min-h-screen">
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center">
-        <div class="loader mb-4"></div>
-        <p id="loadingText" class="text-pink-500 font-medium italic">Opening our memories...</p>
+    <div class="app-container bg-slate-50 min-h-screen">
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center">
+            <div class="loader mb-4"></div>
+            <p id="loadingText" class="text-slate-500 font-medium italic tracking-wide">Opening our memories...</p>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-[400px] glass-card z-50 flex justify-around py-4 shadow-xl border border-slate-200">
+            <button onclick="showPage('home')" id="nav-home" class="nav-btn text-slate-800 flex flex-col items-center transition-all active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <span class="text-[9px] mt-1 font-bold">HOME</span>
+            </button>
+            <button onclick="showPage('gallery')" id="nav-gallery" class="nav-btn text-slate-400 flex flex-col items-center transition-all active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/></svg>
+                <span class="text-[9px] mt-1 font-bold">MOMENTS</span>
+            </button>
+            <button onclick="showPage('letters')" id="nav-letters" class="nav-btn text-slate-400 flex flex-col items-center transition-all active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <span class="text-[9px] mt-1 font-bold">LETTERS</span>
+            </button>
+        </nav>
+
+        <!-- Primary Main Wrapper -->
+        <main class="hide-scrollbar">
+            
+            <!-- HOME PAGE -->
+            <section id="home" class="page active-page p-8 pb-40">
+                <div class="mt-12 text-center">
+                    <h1 class="text-6xl font-handwritten text-slate-800 mb-2">Our Story</h1>
+                    <p class="text-slate-500 text-[10px] tracking-[0.3em] uppercase mb-12 font-semibold">Ester & Jirraine</p>
+                    
+                    <div class="grid grid-cols-3 gap-3 mb-10">
+                        <div class="glass-card p-5 shadow-sm border-b-2 border-slate-300">
+                            <span id="days" class="text-3xl font-bold text-slate-800 block">0</span>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase mt-1">Days</p>
+                        </div>
+                        <div class="glass-card p-5 shadow-sm border-b-2 border-slate-300">
+                            <span id="hours" class="text-3xl font-bold text-slate-800 block">0</span>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase mt-1">Hours</p>
+                        </div>
+                        <div class="glass-card p-5 shadow-sm border-b-2 border-slate-300">
+                            <span id="mins" class="text-3xl font-bold text-slate-800 block">0</span>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase mt-1">Mins</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-7 text-left space-y-5 shadow-sm">
+                        <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center border-b border-slate-100 pb-4 mb-2">Detailed Breakdown</h3>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Seconds</span>
+                            <span id="alt-seconds" class="font-bold text-slate-700 font-mono text-xs tabular-nums">0</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Minutes</span>
+                            <span id="alt-minutes" class="font-bold text-slate-700 font-mono text-xs tabular-nums">0</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Hours</span>
+                            <span id="alt-hours" class="font-bold text-slate-700 font-mono text-xs tabular-nums">0</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Weeks</span>
+                            <span id="alt-weeks" class="font-bold text-slate-900 font-mono text-xs tabular-nums">0</span>
+                        </div>
+                    </div>
+
+                    <p class="mt-12 text-[9px] text-slate-400 tracking-tighter uppercase font-medium">Established January 6, 2025</p>
+                </div>
+            </section>
+
+            <!-- MOMENTS PAGE -->
+            <section id="gallery" class="page p-8 pb-40">
+                <header class="flex justify-between items-end mb-10 mt-4">
+                    <div>
+                        <h2 class="text-4xl font-bold text-slate-800 tracking-tight">Moments</h2>
+                        <p class="text-slate-500 text-xs font-semibold mt-1">Our visual journey</p>
+                    </div>
+                    <label class="bg-slate-800 hover:bg-slate-900 text-white p-3.5 rounded-2xl cursor-pointer shadow-lg active:scale-95 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <input type="file" id="photoInput" class="hidden" accept="image/*">
+                    </label>
+                </header>
+                <div id="photoGrid" class="grid grid-cols-2 gap-4"></div>
+            </section>
+
+            <!-- LETTERS PAGE -->
+            <section id="letters" class="page p-8 pb-40">
+                <header class="flex justify-between items-end mb-10 mt-4">
+                    <div>
+                        <h2 class="text-4xl font-bold text-slate-800 tracking-tight">Letters</h2>
+                        <p class="text-slate-500 text-xs font-semibold mt-1">Written from the heart</p>
+                    </div>
+                    <button id="addLetterBtn" class="bg-slate-800 hover:bg-slate-900 text-white p-3.5 rounded-2xl shadow-lg active:scale-95 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </header>
+                <div id="letterList" class="space-y-6"></div>
+            </section>
+        </main>
     </div>
 
-    <!-- Sign Out Button -->
-    <button id="logoutBtn" class="fixed top-4 right-4 z-50 bg-white/50 px-3 py-1 rounded-full text-[10px] font-bold text-gray-400 uppercase hidden">Sign Out</button>
-
-    <!-- Navigation Bar -->
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] glass-card z-50 flex justify-around py-4 shadow-lg border border-pink-100">
-        <button onclick="showPage('home')" id="nav-home" class="nav-btn text-pink-500 flex flex-col items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            <span class="text-[9px] mt-1 font-bold">HOME</span>
-        </button>
-        <button onclick="showPage('gallery')" id="nav-gallery" class="nav-btn text-pink-300 flex flex-col items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/></svg>
-            <span class="text-[9px] mt-1 font-bold">MOMENTS</span>
-        </button>
-        <button onclick="showPage('letters')" id="nav-letters" class="nav-btn text-pink-300 flex flex-col items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            <span class="text-[9px] mt-1 font-bold">LETTERS</span>
-        </button>
-    </nav>
-
-    <!-- Primary Main Wrapper -->
-    <main class="hide-scrollbar">
-        
-        <!-- HOME PAGE -->
-        <section id="home" class="page active-page p-6 pb-32">
-            <div class="mt-16 text-center">
-                <h1 class="text-5xl font-handwritten text-pink-600 mb-2">Our Story</h1>
-                <p class="text-gray-400 text-xs tracking-widest uppercase mb-10">Eternal Love</p>
-                
-                <div class="grid grid-cols-3 gap-3 mb-10">
-                    <div class="glass-card p-5 shadow-sm">
-                        <span id="days" class="text-3xl font-bold text-gray-700 block">0</span>
-                        <p class="text-[10px] text-pink-400 font-bold uppercase">Days</p>
-                    </div>
-                    <div class="glass-card p-5 shadow-sm">
-                        <span id="hours" class="text-3xl font-bold text-gray-700 block">0</span>
-                        <p class="text-[10px] text-pink-400 font-bold uppercase">Hours</p>
-                    </div>
-                    <div class="glass-card p-5 shadow-sm">
-                        <span id="mins" class="text-3xl font-bold text-gray-700 block">0</span>
-                        <p class="text-[10px] text-pink-400 font-bold uppercase">Mins</p>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 text-left space-y-4 shadow-sm border border-pink-50">
-                    <h3 class="text-[10px] font-bold text-pink-400 uppercase tracking-widest text-center border-b border-pink-100 pb-3 mb-2">Detailed Breakdown</h3>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-400 font-medium">Seconds</span>
-                        <span id="alt-seconds" class="font-bold text-gray-600 font-mono text-xs">0</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-400 font-medium">Minutes</span>
-                        <span id="alt-minutes" class="font-bold text-gray-600 font-mono text-xs">0</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-400 font-medium">Hours</span>
-                        <span id="alt-hours" class="font-bold text-gray-600 font-mono text-xs">0</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-400 font-medium">Weeks</span>
-                        <span id="alt-weeks" class="font-bold text-pink-500 font-mono text-xs">0</span>
-                    </div>
-                </div>
-
-                <p class="mt-8 text-[10px] text-gray-300 tracking-tighter uppercase">Est. January 6, 2025</p>
-            </div>
-        </section>
-
-        <!-- MOMENTS PAGE -->
-        <section id="gallery" class="page p-6 pb-32">
-            <header class="flex justify-between items-end mb-8 mt-4">
-                <div>
-                    <h2 class="text-3xl font-bold text-gray-800">Moments</h2>
-                    <p class="text-pink-400 text-xs font-semibold">Our visual journey</p>
-                </div>
-                <label class="bg-pink-500 text-white p-3 rounded-2xl cursor-pointer shadow-lg active:scale-95 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <input type="file" id="photoInput" class="hidden" accept="image/*">
-                </label>
-            </header>
-            <div id="photoGrid" class="grid grid-cols-2 gap-4"></div>
-        </section>
-
-        <!-- LETTERS PAGE -->
-        <section id="letters" class="page p-6 pb-32">
-            <header class="flex justify-between items-end mb-8 mt-4">
-                <div>
-                    <h2 class="text-3xl font-bold text-gray-800">Letters</h2>
-                    <p class="text-pink-400 text-xs font-semibold">Written from the heart</p>
-                </div>
-                <button id="addLetterBtn" class="bg-pink-500 text-white p-3 rounded-2xl shadow-lg active:scale-95 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-            </header>
-            <div id="letterList" class="space-y-6"></div>
-        </section>
-    </main>
-
     <!-- Write Letter Modal -->
-    <div id="letterModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-6">
-        <div class="bg-white w-full rounded-[32px] p-8 shadow-2xl">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">New Letter</h3>
-            <textarea id="letterText" class="w-full h-48 p-5 bg-pink-50/30 border border-pink-100 rounded-2xl outline-none mb-6 focus:ring-2 focus:ring-pink-200 transition-all text-gray-700" placeholder="Write something sweet..."></textarea>
+    <div id="letterModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-[400px] rounded-[32px] p-8 shadow-2xl border border-slate-100">
+            <h3 class="text-2xl font-bold text-slate-800 mb-4 tracking-tight">New Letter</h3>
+            <textarea id="letterText" class="w-full h-48 p-5 bg-slate-50 border border-slate-200 rounded-2xl outline-none mb-6 focus:ring-2 focus:ring-slate-300 transition-all text-slate-700 resize-none" placeholder="Write something sweet..."></textarea>
             <div class="flex gap-3">
-                <button onclick="document.getElementById('letterModal').classList.add('hidden')" class="flex-1 py-4 font-bold text-gray-400 bg-gray-50 rounded-2xl">Cancel</button>
-                <button id="saveLetterBtn" class="flex-1 py-4 font-bold bg-pink-500 text-white rounded-2xl shadow-pink-200 shadow-lg">Save Letter</button>
+                <button onclick="document.getElementById('letterModal').classList.add('hidden')" class="flex-1 py-4 font-bold text-slate-400 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-colors">Cancel</button>
+                <button id="saveLetterBtn" class="flex-1 py-4 font-bold bg-slate-800 text-white rounded-2xl shadow-slate-200 shadow-lg active:scale-95 transition-all">Save</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Environment Provided Variables
         const firebaseConfig = JSON.parse(__firebase_config);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'our-story-app';
 
@@ -162,20 +186,18 @@
 
         const startDate = new Date('2025-01-06T00:00:00');
 
-        // Navigation Helper
         window.showPage = (id) => {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             const target = document.getElementById(id);
             if (target) target.classList.add('active-page');
             
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.replace('text-pink-500', 'text-pink-300'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.replace('text-slate-800', 'text-slate-400'));
             const activeBtn = document.getElementById(`nav-${id}`);
-            if (activeBtn) activeBtn.classList.replace('text-pink-300', 'text-pink-500');
+            if (activeBtn) activeBtn.classList.replace('text-slate-400', 'text-slate-800');
             
             document.querySelector('main').scrollTop = 0;
         };
 
-        // Authentication & Initialization
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -190,8 +212,8 @@
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById('loadingOverlay').style.display = 'none';
-                document.getElementById('logoutBtn').classList.remove('hidden');
+                document.getElementById('loadingOverlay').classList.add('opacity-0');
+                setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 400);
                 startSync(user.uid);
             } else {
                 initAuth();
@@ -201,61 +223,61 @@
         function startSync(userId) {
             if (!db) return;
             
-            // Public Paths per Rule 1
             const photosCol = collection(db, 'artifacts', appId, 'public', 'data', 'photos');
             const lettersCol = collection(db, 'artifacts', appId, 'public', 'data', 'letters');
 
-            // Sync Moments
             onSnapshot(query(photosCol, orderBy('timestamp', 'desc')), (snap) => {
                 const grid = document.getElementById('photoGrid');
                 grid.innerHTML = snap.docs.map(d => `
-                    <div class="relative aspect-[4/5] rounded-[24px] overflow-hidden shadow-sm bg-white border-4 border-white">
+                    <div class="relative group aspect-[4/5] rounded-[24px] overflow-hidden shadow-sm bg-white border-4 border-white transition-all hover:shadow-md">
                         <img src="${d.data().url}" class="w-full h-full object-cover" loading="lazy">
-                        <button onclick="deleteItem('photos', '${d.id}')" class="absolute top-2 right-2 bg-black/40 backdrop-blur-md text-white rounded-full p-1.5 active:scale-75 transition-transform">
+                        <button onclick="deleteItem('photos', '${d.id}')" class="absolute top-2 right-2 bg-slate-900/40 backdrop-blur-md text-white rounded-full p-2 scale-0 group-hover:scale-100 active:scale-75 transition-all">
                             <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
                         </button>
                     </div>
-                `).join('') || '<div class="col-span-2 text-center text-gray-300 py-20">No moments yet</div>';
-            }, (err) => console.error("Snapshot error (photos):", err));
+                `).join('') || '<div class="col-span-2 text-center text-slate-300 py-32 italic">No moments captured yet</div>';
+            }, (err) => console.error(err));
 
-            // Sync Letters
             onSnapshot(query(lettersCol, orderBy('timestamp', 'desc')), (snap) => {
                 const list = document.getElementById('letterList');
                 list.innerHTML = snap.docs.map(d => `
-                    <div class="p-6 bg-white rounded-[28px] shadow-sm border border-pink-50 relative">
-                        <p class="text-gray-700 font-handwritten text-xl leading-relaxed">${d.data().text}</p>
-                        <p class="text-[9px] text-gray-300 mt-4 uppercase font-bold tracking-widest">${new Date(d.data().timestamp).toLocaleDateString()}</p>
-                        <button onclick="deleteItem('letters', '${d.id}')" class="absolute top-4 right-4 text-gray-200">
-                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                        </button>
+                    <div class="p-7 bg-white rounded-[32px] shadow-sm border border-slate-100 relative group transition-all hover:shadow-md">
+                        <p class="text-slate-700 font-handwritten text-2xl leading-relaxed">${d.data().text}</p>
+                        <div class="flex justify-between items-center mt-6">
+                            <p class="text-[9px] text-slate-300 uppercase font-bold tracking-widest">${new Date(d.data().timestamp).toLocaleDateString()}</p>
+                            <button onclick="deleteItem('letters', '${d.id}')" class="text-slate-200 hover:text-slate-400 transition-colors opacity-0 group-hover:opacity-100">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </button>
+                        </div>
                     </div>
-                `).join('') || '<div class="text-center text-gray-300 py-20">Your mailbox is empty</div>';
-            }, (err) => console.error("Snapshot error (letters):", err));
+                `).join('') || '<div class="text-center text-slate-300 py-32 italic">Your mailbox is empty...</div>';
+            }, (err) => console.error(err));
 
             window.deleteItem = async (colName, docId) => { 
                 if(!confirm("Erase this memory?")) return;
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', colName, docId)); 
             };
 
-            // Upload Logic
             document.getElementById('photoInput').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
                 document.getElementById('loadingOverlay').style.display = 'flex';
+                document.getElementById('loadingOverlay').classList.remove('opacity-0');
                 
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     const img = new Image();
                     img.onload = async () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800;
+                        const MAX_WIDTH = 1000;
                         const scale = MAX_WIDTH / img.width;
                         canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                         await addDoc(photosCol, { url: dataUrl, timestamp: Date.now(), userId });
-                        document.getElementById('loadingOverlay').style.display = 'none';
+                        document.getElementById('loadingOverlay').classList.add('opacity-0');
+                        setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 400);
                     };
                     img.src = event.target.result;
                 };
@@ -272,10 +294,8 @@
             });
         }
 
-        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth).then(() => location.reload()));
         document.getElementById('addLetterBtn').addEventListener('click', () => document.getElementById('letterModal').classList.remove('hidden'));
 
-        // Counter Engine
         setInterval(() => {
             const now = new Date();
             const diffMs = now - startDate;
@@ -284,9 +304,8 @@
             const totalHour = Math.floor(totalMin / 60);
             const totalDays = Math.floor(totalHour / 24);
             
-            const daysEl = document.getElementById('days');
-            if (daysEl && document.getElementById('home').classList.contains('active-page')) {
-                daysEl.innerText = totalDays;
+            if (document.getElementById('home').classList.contains('active-page')) {
+                document.getElementById('days').innerText = totalDays;
                 document.getElementById('hours').innerText = totalHour % 24;
                 document.getElementById('mins').innerText = totalMin % 60;
                 document.getElementById('alt-seconds').innerText = totalSec.toLocaleString();
