@@ -177,7 +177,19 @@
         import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = JSON.parse(FIREBASE_CONFIG);
+       // REPLACE LINE 180 WITH THIS:
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA-SiUpQDEY5vVf0xOFqw0sVofOK6xxYV8",
+  authDomain: "our-story-42b52.firebaseapp.com",
+  projectId: "our-story-42b52",
+  storageBucket: "our-story-42b52.firebasestorage.app",
+  messagingSenderId: "376510981706",
+  appId: "1:376510981706:web:9355b272baf3a739e628b3",
+  measurementId: "G-T9ZTM7KZMX"
+};
+
+// This line stays the same
+firebase.initializeApp(FIREBASE_CONFIG);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'our-story-app';
 
         const app = initializeApp(firebaseConfig);
@@ -317,5 +329,6 @@
     </script>
 </body>
 </html>
+
 
 
