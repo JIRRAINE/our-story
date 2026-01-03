@@ -79,52 +79,55 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, signInWithRedirect, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, signInWithRedirect, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- REPLACE THESE WITH YOUR KEYS ---
-        const firebaseConfig = {
-            apiKey: "AIzaSy...", 
-            authDomain: "our-story-42b52.firebaseapp.com",
-            projectId: "our-story-42b52",
-            storageBucket: "our-story-42b52.firebasestorage.app",
-            messagingSenderId: "...",
-            appId: "..."
-        };
+// --- PASTE YOUR ACTUAL CONFIG HERE ---
+const firebaseConfig = {
+    apiKey: "AIzaSy...", 
+    authDomain: "our-story-42b52.firebaseapp.com",
+    projectId: "our-story-42b52",
+    storageBucket: "our-story-42b52.firebasestorage.app",
+    messagingSenderId: "...",
+    appId: "..."
+};
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const startDate = new Date('2025-01-06T00:00:00');
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        // FORCE HIDE LOADER AFTER 5 SECONDS (Safety)
-        setTimeout(() => { document.getElementById('loadingOverlay').style.display = 'none'; }, 5000);
+// SPEED FIX 1: If it takes more than 5 seconds, just hide the loader
+setTimeout(() => {
+    document.getElementById('loadingOverlay').style.display = 'none';
+}, 5000);
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('logoutBtn').classList.remove('hidden');
-                startSync();
-            } else {
-                const provider = new GoogleAuthProvider();
-                signInWithRedirect(auth, provider); // Fixes disappearing pop-up
-            }
-        });
+// SPEED FIX 2: Use Redirect instead of Pop-up (avoids the "disappearing window" bug)
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        document.getElementById('loadingOverlay').style.display = 'none';
+        document.getElementById('logoutBtn').classList.remove('hidden');
+        startSync();
+    } else {
+        const provider = new GoogleAuthProvider();
+        // This moves the whole page to login so it can't be blocked
+        signInWithRedirect(auth, provider); 
+    }
+});
 
-        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth).then(() => location.reload()));
-
-        function startSync() {
-            // Photos (limited to 10 for instant loading)
-            onSnapshot(query(collection(db, 'photos'), orderBy('timestamp', 'desc'), limit(10)), (snap) => {
-                const grid = document.getElementById('photoGrid');
-                grid.innerHTML = snap.docs.map(d => `
-                    <div class="relative aspect-square rounded-2xl overflow-hidden shadow-md bg-white">
-                        <img src="${d.data().url}" class="w-full h-full object-cover" loading="lazy">
-                        <button onclick="deleteItem('photos', '${d.id}')" class="absolute top-2 right-2 bg-black/20 text-white rounded-full p-1 text-xs px-1.5">✕</button>
-                    </div>
-                `).join('') || '<p class="col-span-2 text-center text-gray-400 py-10">Empty scrapbook.</p>';
-                document.getElementById('loadingOverlay').style.display = 'none';
-            });
+function startSync() {
+    // SPEED FIX 3: Only load the 10 most recent photos initially
+    const q = query(collection(db, 'photos'), orderBy('timestamp', 'desc'), limit(10));
+    onSnapshot(q, (snap) => {
+        const grid = document.getElementById('photoGrid');
+        grid.innerHTML = snap.docs.map(d => `
+            <div class="relative aspect-square rounded-2xl overflow-hidden shadow-md bg-white">
+                <img src="${d.data().url}" class="w-full h-full object-cover" loading="lazy">
+                <button onclick="deleteItem('photos', '${d.id}')" class="absolute top-2 right-2 bg-black/20 text-white rounded-full p-1 text-[10px]">✕</button>
+            </div>
+        `).join('') || '<p class="col-span-2 text-center text-gray-400 py-10">No photos yet.</p>';
+    });
+}
 
             // Letters
             onSnapshot(query(collection(db, 'letters'), orderBy('timestamp', 'desc')), (snap) => {
@@ -201,3 +204,4 @@
     </script>
 </body>
 </html>
+
