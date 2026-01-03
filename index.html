@@ -177,8 +177,8 @@
         import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-       // REPLACE LINE 180 WITH THIS:
-const FIREBASE_CONFIG = {
+     // 1. Corrected variable name to match what the app uses below
+const firebaseConfig = {
   apiKey: "AIzaSyA-SiUpQDEY5vVf0xOFqw0sVofOK6xxYV8",
   authDomain: "our-story-42b52.firebaseapp.com",
   projectId: "our-story-42b52",
@@ -188,6 +188,11 @@ const FIREBASE_CONFIG = {
   measurementId: "G-T9ZTM7KZMX"
 };
 
+// 2. Remove the old "firebase.initializeApp" line that was causing the crash
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'our-story-app';
+
+// 3. This line now correctly uses the lowercase 'firebaseConfig'
+const app = initializeApp(firebaseConfig);
 // This line stays the same
 firebase.initializeApp(FIREBASE_CONFIG);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'our-story-app';
@@ -329,6 +334,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
     </script>
 </body>
 </html>
+
 
 
 
