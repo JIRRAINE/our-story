@@ -177,7 +177,7 @@
         import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = JSON.parse(__firebase_config);
+        const firebaseConfig = JSON.parse(FIREBASE_CONFIG);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'our-story-app';
 
         const app = initializeApp(firebaseConfig);
@@ -317,4 +317,5 @@
     </script>
 </body>
 </html>
+
 
